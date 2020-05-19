@@ -27,6 +27,10 @@ To test the Express server, browse to the URL [http://localhost:5000/](http://lo
 
 Software developmental tools like Postman work too.
 
+## About
+
+The goal of this project was to build a REST API for a theoretical school. A user can sign up and then use CRUD functionality to
+create classes, see which classes are available, update the courses only they posted, and delete course only they posted. Sequelize and Express were used to build a database and server.
 
 ## Skills
 
