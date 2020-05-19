@@ -26,3 +26,12 @@ npm start
 To test the Express server, browse to the URL [http://localhost:5000/](http://localhost:5000/).
 
 Software developmental tools like Postman work too.
+
+
+## Skills
+
+* User Authentication
+* Express error handling
+* ORM realtional modeling
+* Hasing for password security
+* Validation in ORM database
