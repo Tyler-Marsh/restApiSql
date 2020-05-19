@@ -32,6 +32,8 @@ Software developmental tools like Postman work too.
 
 * User Authentication
 * Express error handling
-* ORM realtional modeling
+* ORM relational modeling
 * Hasing for password security
 * Validation in ORM database
+* Routing
+* Controlling user privileges
