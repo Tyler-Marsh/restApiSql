@@ -20,7 +20,7 @@ module.exports = (sequelize) => {
       type: Sequelize.STRING,
         validate: {
           notEmpty: {
-	    msg: 'Your first name is required'
+	          msg: 'Your first name is required'
           }
         }
     },

@@ -7,7 +7,7 @@ const authenticateUser = require('./middleware/authenticateUser');
 const asyncHandler = require('./middleware/asyncHandler');
 const { check, validationResult } = require('express-validator');
 
-
+const { courseValidation } = require('./middleware/courseVal');
 //const Sequelize = require('sequelize');
 // import the database so that raw queries are available
 // sequelize CLI index.js file exposes these methods
@@ -16,7 +16,7 @@ const db = require('../models');
 
 router.get('/courses', asyncHandler(async (req, res) => {
   //  find course info and teacher names
-  courses = await db.sequelize.query("SELECT Users.firstName, Users.lastName, Courses.title, Courses.id AS courseID FROM Users, Courses WHERE Users.id = Courses.userId");
+  courses = await db.sequelize.query("SELECT Users.firstName, Users.lastName, Users.emailAddress, Courses.title,  Courses.estimatedTime, Courses.materialsNeeded, Courses.description, Courses.id AS courseID FROM Users, Courses WHERE Users.id = Courses.userId");
   result =  await courses[0]
   res.json({result})
 }));
@@ -31,7 +31,16 @@ router.get('/courses/:id', asyncHandler(async (req, res) => {
 
 //POST /api/courses 201 - Creates a course, sets the Location header to the URI for the course, and returns no content
 
-router.post('/courses', authenticateUser, asyncHandler(async (req, res, next) => {
+router.post('/courses',[ courseValidation], authenticateUser, asyncHandler(async (req, res, next) => {
+  // check validation 
+  const errors = validationResult(req);
+
+  if (!errors.isEmpty()) {
+    const errorMessages = errors.array().map(error => error.msg);
+    // send status of 400 with the error messages
+    res.status(400).json({ errors: errorMessages });
+  }
+
   let course;
   try {
     // create the course
@@ -61,14 +70,9 @@ router.post('/courses', authenticateUser, asyncHandler(async (req, res, next) =>
 }));
 
 
-/* VALIDATORS FOR THE PUT ROUTE */
-const titleValidation = check('title').exists({checkNull: true, checkFalsy: true}).withMessage('Please provide a value for "title"');
-const descriptionValidation = check('description').exists({checkNull: true, checkFalsy: true}).withMessage('Please provide a description');
-
-
 // PUT /api/courses/:id 204 - Updates a course and returns no content
-router.put('/courses/:id', [titleValidation, descriptionValidation] , authenticateUser, asyncHandler(async (req, res, next) => {
-
+router.put('/courses/:id', [courseValidation] , authenticateUser, asyncHandler(async (req, res, next) => {
+  // check validation
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     const errorMessages = errors.array().map(error => error.msg);

@@ -28,7 +28,10 @@ const sequelize = new Sequelize({
 // create the Express app
 const app = express();
 app.use(express.json());
-// SEE IF THIS BREAKS APP
+
+const cors = require('cors');
+// Enable all CORS Requests
+app.use(cors());
 app.use(express.urlencoded({ extended: false }));
 // setup morgan which gives us http request logging
 app.use(morgan('dev'));
